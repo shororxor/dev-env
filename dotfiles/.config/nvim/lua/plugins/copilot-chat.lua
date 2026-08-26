@@ -1,0 +1,43 @@
+return {
+    -- 'CopilotC-Nvim/CopilotChat.nvim',
+    -- dependencies = {
+    --     { 'nvim-lua/plenary.nvim', branch = 'master' },
+    -- },
+    -- build = 'make tiktoken',
+    -- opts = {
+    --     model = 'gpt-4o-2024-08-06',
+    --     temperature = 0.1,
+    --     trusted_tools = { 'file', 'glob', 'grep' },
+    --     auto_insert_mode = false,
+    --     window = {
+    --         layout = 'vertical',
+    --         width = 0.3,
+    --         title = 'Copilot Chat',
+    --         zindex = 100,
+    --     },
+    --     headers = {
+    --         user = '👤 You',
+    --         assistant = '🤖 Copilot',
+    --         tool = '🔧 Tool',
+    --     },
+    --     separator = '━━',
+    --     auto_fold = true,
+    -- },
+    -- keys = {
+    --     { '<leader>zc', ':CopilotChat<CR>', mode = 'n', desc = 'Chat with Copilot' },
+    --     { '<leader>ze', ':CopilotChatExplain<CR>', mode = 'v', desc = 'Explain code' },
+    --     { '<leader>zr', ':CopilotChatReview<CR>', mode = 'v', desc = 'Review code' },
+    --     { '<leader>zf', ':CopilotChatFix<CR>', mode = 'v', desc = 'Fix code Issues' },
+    --     { '<leader>zd', ':CopilotChatDoc<CR>', mode = 'v', desc = 'Generate Doc' },
+    -- },
+    -- config = function(_, opts)
+    --     require('CopilotChat').setup(opts)
+    --     vim.api.nvim_create_autocmd('FileType', {
+    --         pattern = 'copilot-chat',
+    --         callback = function(ev)
+    --             pcall(vim.keymap.del, 'n', '<C-y>', { buffer = ev.buf })
+    --             pcall(vim.keymap.del, 'i', '<C-y>', { buffer = ev.buf })
+    --         end,
+    --     })
+    -- end,
+}

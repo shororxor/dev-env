@@ -1,0 +1,11 @@
+[user]
+	email = bao.nguyen@u.nus.edu
+	name = Bao Nguyen
+[github]
+	user = shororxor
+[core]
+	editor = nvim
+[url "git@github-shororxor.com:"]
+	insteadOf = git@github.com:
+[init]
+	defaultBranch = master

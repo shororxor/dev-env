@@ -1,0 +1,18 @@
+[submodule "dotfiles/.tmux/plugins/tpm"]
+	path = dotfiles/.tmux/plugins/tpm
+	url = https://github.com/tmux-plugins/tpm.git
+[submodule "dotfiles/.tmux/plugins/tmux-resurrect"]
+	path = dotfiles/.tmux/plugins/tmux-resurrect
+	url = https://github.com/tmux-plugins/tmux-resurrect.git
+[submodule "dotfiles/.tmux/plugins/vim-tmux-navigator"]
+	path = dotfiles/.tmux/plugins/vim-tmux-navigator
+	url = https://github.com/christoomey/vim-tmux-navigator.git
+[submodule "dotfiles/.tmux/plugins/catppuccin/tmux"]
+	path = dotfiles/.tmux/plugins/catppuccin/tmux
+	url = https://github.com/catppuccin/tmux.git
+[submodule "dotfiles/.vim/pack/plugins/start/syntastic"]
+	path = dotfiles/.vim/pack/plugins/start/syntastic
+	url = https://github.com/vim-syntastic/syntastic.git
+[submodule "dotfiles/.vim/pack/plugins/start/vim-airline"]
+	path = dotfiles/.vim/pack/plugins/start/vim-airline
+	url = https://github.com/vim-airline/vim-airline.git

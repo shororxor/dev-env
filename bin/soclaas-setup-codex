@@ -1,0 +1,205 @@
+#!/usr/bin/env python3
+"""
+Model Catalog Generator for Codex
+This script generates model_catalog.json from SOCLAAS API
+It dynamically fetches models and creates a proper catalog with base_instructions
+"""
+
+import json
+import os
+import sys
+import urllib.request
+import urllib.error
+import tomlkit
+
+
+CODEX_HOME = os.path.expanduser("~/.codex")
+
+
+def update_config_toml():
+    """Update ~/.codex/soclaas.config.toml with model settings"""
+    config_path = os.path.join(CODEX_HOME, "soclaas.config.toml")
+    
+    if os.path.exists(config_path):
+        with open(config_path, "r") as f:
+            doc = tomlkit.parse(f.read())
+    else:
+        doc = tomlkit.document()
+    
+    # Set required top-level fields
+    doc["model"] = "qwen3-coder-next"
+    doc["model_provider"] = "soclaas"
+    doc["model_reasoning_effort"] = "none"
+    
+    # Add model catalog JSON path
+    doc["model_catalog_json"] = "~/.codex/soclaas-model-catalog.json"
+    
+    # Add model provider settings
+    doc["model_providers"] = tomlkit.table()
+    doc["model_providers"]["soclaas"] = tomlkit.table()
+    doc["model_providers"]["soclaas"]["name"] = "SoClaas Endpoint"
+    doc["model_providers"]["soclaas"]["base_url"] = "https://soclaas-api.comp.nus.edu.sg/v1"
+    doc["model_providers"]["soclaas"]["env_key"] = "SOCLAAS_API_KEY"
+    doc["model_providers"]["soclaas"]["wire_api"] = "responses"
+    
+    with open(config_path, "w") as f:
+        f.write(tomlkit.dumps(doc))
+
+def generate_fallback_catalog():
+    """Generate the fallback catalog with qwen3-coder-next"""
+    fallback = {
+        "models": [
+            {
+                "slug": "qwen3-coder-next",
+                "display_name": "Qwen3 Coder Next via CoreLaaS",
+                "description": "Qwen3 Coder Next served through CoreLaaS OpenAI-compatible gateway",
+                "prefer_websockets": False,
+                "support_verbosity": False,
+                "default_verbosity": "low",
+                "apply_patch_tool_type": "freeform",
+                "web_search_tool_type": "text",
+                "input_modalities": ["text"],
+                "supports_image_detail_original": False,
+                "truncation_policy": {
+                    "mode": "tokens",
+                    "limit": 10000
+                },
+                "supports_parallel_tool_calls": False,
+                "context_window": 131072,
+                "max_context_window": 131072,
+                "auto_compact_token_limit": 96000,
+                "supported_reasoning_levels": [],
+                "shell_type": "shell_command",
+                "visibility": "list",
+                "supported_in_api": True,
+                "priority": 102,
+                "base_instructions": "You are Codex, a terminal-based coding assistant. Help the user with coding tasks using clear, concise, practical answers.",
+                "model_messages": None,
+                "experimental_supported_tools": [],
+                "supports_search_tool": False,
+                "supports_reasoning_summaries": False
+            }
+        ]
+    }
+    return fallback
+
+
+def fetch_models_from_api():
+    """Fetch models from the SOCLAAS API"""
+    soclaas_url = os.environ.get("SOCLAAS_URL")
+    soclaas_api_key = os.environ.get("SOCLAAS_API_KEY")
+
+    if not soclaas_url:
+        print("Error: SOCLAAS_URL environment variable is not set")
+        sys.exit(1)
+
+    if not soclaas_api_key:
+        print("Error: SOCLAAS_API_KEY environment variable is not set")
+        sys.exit(1)
+
+    url = f"{soclaas_url}/v1/models"
+    print(f"Generating model catalog...")
+
+    req = urllib.request.Request(url)
+    req.add_header("Authorization", f"Bearer {soclaas_api_key}")
+
+    try:
+        with urllib.request.urlopen(req, timeout=30) as response:
+            return json.loads(response.read().decode("utf-8"))
+    except urllib.error.URLError as e:
+        print(f"Warning: Failed to fetch from API: {e}")
+        return None
+    except json.JSONDecodeError as e:
+        print(f"Warning: API response is not valid JSON: {e}")
+        return None
+
+
+def process_model(model_data):
+    """Process a single model from the API response"""
+    model_id = model_data.get("id", "")
+    
+    if not model_id or model_id == "null":
+        return None
+
+    # Create slug from model ID
+    slug = "".join(c if (c.isalnum() or c in ". _-:") else "-" for c in model_id)
+    
+    # Create display name from model ID
+    display_name = " ".join(word.capitalize() for word in model_id.replace(":", " ").split())
+
+    print(f"Found model: {slug} ({display_name})")
+
+    model = {
+        "slug": slug,
+        "display_name": display_name,
+        "description": "Default flagship out-of-the-box model wrapper",
+        "prefer_websockets": False,
+        "support_verbosity": False,
+        "default_verbosity": "low",
+        "visibility": "list",
+        "supported_in_api": True,
+        "priority": 1,
+        "context_window": 131072,
+        "max_context_window": 131072,
+        "auto_compact_token_limit": 96000,
+        "shell_type": "shell_command",
+        "apply_patch_tool_type": "freeform",
+        "web_search_tool_type": "text",
+        "supports_image_detail_original": False,
+        "base_instructions": "You are Codex, a terminal-based coding assistant. Help the user with coding tasks using clear, concise, practical answers.",
+        "truncation_policy": {
+            "mode": "tokens",
+            "limit": 10000
+        },
+        "input_modalities": ["text", "image"],
+        "supports_parallel_tool_calls": True,
+        "supports_reasoning_summaries": False,
+        "default_reasoning_level": "none",
+        "experimental_supported_tools": [],
+        "supported_reasoning_levels": [
+            {
+                "effort": "none",
+                "description": "Standard inference mode"
+            }
+        ]
+    }
+    return model
+
+
+def main():
+    model_data = fetch_models_from_api()
+    
+    if model_data is None:
+        print("Warning: Failed to fetch from API, using fallback model catalog")
+        catalog = generate_fallback_catalog()
+        catalog_path = os.path.join(CODEX_HOME, "soclaas-model-catalog.json")
+        with open(catalog_path, "w") as f:
+            json.dump(catalog, f, indent=2)
+        print(f"Created fallback model catalog: {catalog_path}")
+        update_config_toml()
+        return
+
+    # Extract models from the response
+    models = model_data.get("data", [])
+
+    # Process each model
+    processed_models = []
+    for model in models:
+        processed = process_model(model)
+        if processed:
+            processed_models.append(processed)
+
+    # Create the catalog
+    catalog = {"models": processed_models}
+
+    # Write to file
+    catalog_path = os.path.join(CODEX_HOME, "soclaas-model-catalog.json")
+    with open(catalog_path, "w") as f:
+        json.dump(catalog, f, indent=2)
+
+    print(f"Model catalog created successfully: {catalog_path} ({len(processed_models)} models)")
+    update_config_toml()
+
+
+if __name__ == "__main__":
+    main()
