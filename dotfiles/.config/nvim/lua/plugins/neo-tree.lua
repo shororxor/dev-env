@@ -59,10 +59,10 @@ return {
                             vim.notify('No file path found', vim.log.levels.WARN)
                         end
 
-                        if path:match('%.pdf$') then
+                        if path:match('%.md$') then
                             vim.fn.jobstart({ 'firefox', path }, { detach = true })
                         else
-                            vim.notify('Not a PDF file', vim.log.levels.WARN)
+                            vim.notify('Not a Markdown file', vim.log.levels.WARN)
                         end
                     end,
                 },
