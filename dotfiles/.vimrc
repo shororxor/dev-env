@@ -18,11 +18,19 @@ set shiftwidth=2
 set wrap
 set linebreak
 set ruler
-color onedark
+color catppuccin_mocha
 set t_RV=
 set t_u7=
 set number
 set clipboard=unnamedplus,unnamed
+
+" Edit theme
+highlight Normal guibg=NONE ctermbg=NONE
+highlight NormalNC guibg=NONE ctermbg=NONE
+highlight SignColumn guibg=NONE ctermbg=NONE
+highlight EndOfBuffer guibg=NONE ctermbg=NONE
+highlight LineNr guibg=NONE ctermbg=NONE
+highlight FoldColumn guibg=NONE ctermbg=NONE
 
 " Smart bracket
 inoremap { {}<Left>
@@ -34,8 +42,8 @@ nnoremap <C-l> gt
 set tabpagemax=60
 
 " Visual map for commentng java code
-vnoremap c :s#^#// #<CR>
-vnoremap u :s#^// ##<CR>
+vnoremap cc :s#^#// #<CR>
+vnoremap cu :s#^// ##<CR>
 
 " Past yanked text in terminal
 tnoremap <C-p> <C-w>""
@@ -58,6 +66,9 @@ set mouse+=a
 abbr psvm public static void main(String[] args) {
 abbr sout System.out.println("");<esc>2hi
 abbr sop System.out.print("");<esc>2hi
+
+" Status line configuration
+let g:airline_theme = 'catppuccin_mocha'
 
 " Syntastic configuration
 set statusline+=%#warningmsg#

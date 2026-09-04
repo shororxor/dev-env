@@ -94,6 +94,10 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
     end
 end
 
+vim.keymap.set('n', '<leader>f', function()
+    vim.lsp.buf.format()
+end)
+
 local rtp = vim.opt.rtp
 rtp:prepend(lazypath)
 

@@ -65,12 +65,35 @@ return {
                             vim.notify('Not a Markdown file', vim.log.levels.WARN)
                         end
                     end,
+
+                    copy_file_path = function(state)
+                        local node = state.tree:get_node()
+                        if not node then
+                            return
+                        end
+                        local path = node:get_id()
+                        vim.fn.setreg('+', path) -- system clipboard
+                        vim.notify('Copied: ' .. path)
+                    end,
+
+                    copy_relative_file_path = function(state)
+                        local node = state.tree:get_node()
+                        if not node then
+                            return
+                        end
+                        local path = node:get_id()
+                        local relative = vim.fn.fnamemodify(path, ':.')
+                        vim.fn.setreg('+', relative)
+                        vim.notify('Copied (relative): ' .. relative)
+                    end,
                 },
                 window = {
                     mappings = {
                         ['oa'] = 'avante_add_files',
                         ['op'] = 'open_pdf_in_firefox',
                         ['om'] = 'open_markdown_in_firefox',
+                        ['oy'] = 'copy_file_path',
+                        ['or'] = 'copy_relative_file_path',
                     },
                 },
                 filtered_items = {

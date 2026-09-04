@@ -1,4 +1,4 @@
 return {
-    'OXY2DEV/markview.nvim',
-    config = function() end,
+    -- 'OXY2DEV/markview.nvim',
+    -- config = function() end,
 }

@@ -8,7 +8,6 @@ declare -A links
 links[".config/kitty"]="$HOME/.config/kitty"
 links[".config/wezterm"]="$HOME/.config/wezterm"
 links[".config/terminator/config"]="$HOME/.config/terminator/config"
-links[".bash_history"]="$HOME/.bash_history"
 links[".gitconfig"]="$HOME/.gitconfig"
 links[".config/nvim"]="$HOME/.config/nvim"
 links[".vimrc"]="$HOME/.vimrc"

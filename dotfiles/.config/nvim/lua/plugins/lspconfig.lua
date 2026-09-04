@@ -102,11 +102,11 @@ return {
 
         require('mason-tool-installer').setup({ ensure_installed = ensure_installed })
 
-        for name, server in pairs(servers) do
-            server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-            vim.lsp.config(name, server)
-            vim.lsp.enable(name)
-        end
+        -- for name, server in pairs(servers) do
+        --     server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
+        --     vim.lsp.config(name, server)
+        --     vim.lsp.enable(name)
+        -- end
 
         vim.lsp.config('lua_ls', {
             on_init = function(client)
