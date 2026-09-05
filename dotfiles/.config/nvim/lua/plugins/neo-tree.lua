@@ -8,6 +8,9 @@ return {
     },
 
     config = function()
+        vim.keymap.set('n', '<leader>nt', '<cmd>Neotree toggle<cr>', { desc = '[N]eotree [T]oggle ' })
+        vim.keymap.set('n', '<leader>nr', '<cmd>Neotree reveal<cr>', { desc = '[N]eotree [R]eveal' })
+
         require('neo-tree').setup({
             filesystem = {
                 commands = {

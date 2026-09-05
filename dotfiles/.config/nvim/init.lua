@@ -1,3 +1,4 @@
+-- Vim option config
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 vim.g.have_nerd_font = true
@@ -29,14 +30,13 @@ vim.opt.expandtab = true
 vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
 vim.opt.shiftwidth = 4
-
 vim.opt.fillchars:append({ diff = '╱' })
 
 vim.schedule(function()
     vim.opt.clipboard = 'unnamedplus'
 end)
 
--- diagnostic settings
+-- Diagnostic settings
 vim.diagnostic.config({
     update_in_insert = false,
     severity_sort = true,
@@ -56,15 +56,17 @@ vim.keymap.set('n', '<leader>q', function()
     vim.diagnostic.setloclist()
 end, { desc = 'Open diagnostic loclist' })
 
+-- Navigation settings
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
 vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
 vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
 vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
-vim.keymap.set('n', '<A-h>', ':tabprevious<CR>', { desc = 'Go to previous tab' })
-vim.keymap.set('n', '<A-l>', ':tabnext<CR>', { desc = 'Go to next tab' })
+vim.keymap.set('n', '<A-h>', '<cmd>tabprevious<CR>', { desc = 'Go to previous tab' })
+vim.keymap.set('n', '<A-l>', '<cmd>tabnext<CR>', { desc = 'Go to next tab' })
 
+-- Automatic bracket completion
 vim.keymap.set('i', '{', '{}<Left>', { noremap = true, silent = true })
 vim.keymap.set('i', '<CR>', function()
     local line = vim.fn.getline('.')
@@ -77,6 +79,7 @@ vim.keymap.set('i', '<CR>', function()
     return vim.api.nvim_replace_termcodes('<CR>', true, false, true)
 end, { expr = true, noremap = true, silent = true })
 
+-- Yank text highlight
 vim.api.nvim_create_autocmd('TextYankPost', {
     desc = 'Highlight when yanking (copying) text',
     group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
@@ -85,6 +88,14 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     end,
 })
 
+-- Buffer settings
+vim.keymap.set('n', '<leader>bf', function()
+    vim.lsp.buf.format()
+end, { desc = 'Format buffer custom' })
+
+vim.keymap.set('n', '<leader>bd', '<cmd>bd<CR>', { desc = 'Delete current buffer' })
+
+-- Lazyvim configuration
 local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
     local lazyrepo = 'https://github.com/folke/lazy.nvim.git'
@@ -93,10 +104,6 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
         error('Error cloning lazy.nvim:\n' .. out)
     end
 end
-
-vim.keymap.set('n', '<leader>f', function()
-    vim.lsp.buf.format()
-end)
 
 local rtp = vim.opt.rtp
 rtp:prepend(lazypath)
