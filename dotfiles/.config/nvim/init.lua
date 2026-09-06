@@ -80,19 +80,6 @@ vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' }
 vim.keymap.set('n', '<A-h>', '<cmd>tabprevious<CR>', { desc = 'Go to previous tab' })
 vim.keymap.set('n', '<A-l>', '<cmd>tabnext<CR>', { desc = 'Go to next tab' })
 
--- Automatic bracket completion
-vim.keymap.set('i', '{', '{}<Left>', { noremap = true, silent = true })
-vim.keymap.set('i', '<CR>', function()
-    local line = vim.fn.getline('.')
-    local col = vim.fn.col('.') - 1
-
-    if col >= 1 and col < #line and line:sub(col, col + 1) == '{}' then
-        return vim.api.nvim_replace_termcodes('<CR><Esc>O', true, false, true)
-    end
-
-    return vim.api.nvim_replace_termcodes('<CR>', true, false, true)
-end, { expr = true, noremap = true, silent = true })
-
 -- Yank text highlight
 vim.api.nvim_create_autocmd('TextYankPost', {
     desc = 'Highlight when yanking (copying) text',
