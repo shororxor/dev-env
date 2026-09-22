@@ -1,0 +1,80 @@
+{
+    "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+    "blocks": [
+        {
+            "type": "prompt",
+            "alignment": "left",
+            "segments": [
+                {
+                    "properties": {
+                        "cache_duration": "none"
+                    },
+                    "template": "\uf0e7 ",
+                    "foreground": "red",
+                    "type": "root",
+                    "style": "plain"
+                },
+                {
+                    "properties": {
+                        "cache_duration": "none",
+                        "folder_icon": "\ue5ff",
+                        "folder_separator_icon": "/",
+                        "home_icon": "\udb80\udedc",
+                        "max_depth": 2,
+                        "style": "agnoster_short"
+                    },
+                    "template": "{{.Path}}",
+                    "foreground": "#ae81ff",
+                    "type": "path",
+                    "style": "plain"
+                },
+                {
+                    "properties": {
+                        "cache_duration": "none",
+                        "fetch_status": true,
+                        "fetch_upstream_icon": true
+                    },
+                    "template": " ❯ {{.HEAD}}{{if .BranchStatus}} {{.BranchStatus}}{{end}}{{if .Working.Changed}} <red>\uf044 {{.Working.String}}</>{{end}}{{if and (.Staging.Changed) (.Working.Changed)}} |{{end}}{{if .Staging.Changed}} \uf046 {{.Staging.String}}{{end}}{{if gt .StashCount 0}} \udb80\udd93 {{.StashCount}}{{end}}{{if gt .WorktreeCount 0}} \uf1bb {{.WorktreeCount}}{{end}}",
+                    "foreground": "#a6e22e",
+                    "type": "git",
+                    "style": "plain",
+                    "foreground_templates": [
+                        "{{if or (.Working.Changed) (.Staging.Changed)}}yellow{{end}}",
+                        "{{if and (gt .Ahead 0) (gt .Behind 0)}}red{{end}}",
+                        "{{if gt .Ahead 0}}green{{end}}",
+                        "{{if gt .Behind 0}}red{{end}}"
+                    ]
+                },
+                {
+                    "properties": {
+                        "cache_duration": "none",
+                        "fetch_version": false
+                    },
+                    "template": " ❯ \ue235 {{if .Error}}{{.Error}}{{else}}{{if .Venv}}{{.Venv}} {{end}}{{.Full}}{{end}}",
+                    "foreground": "#66d9ef",
+                    "type": "python",
+                    "style": "plain"
+                }
+            ]
+        },
+        {
+            "type": "prompt",
+            "alignment": "left",
+            "segments": [
+                {
+                    "properties": {
+                        "cache_duration": "none",
+                        "time_format": "15:04:05"
+                    },
+                    "template": "[{{.CurrentDate | date .Format}}] ❯",
+                    "foreground": "#f92672",
+                    "type": "time",
+                    "style": "plain"
+                }
+            ],
+            "newline": true
+        }
+    ],
+    "version": 3,
+    "final_space": true
+}

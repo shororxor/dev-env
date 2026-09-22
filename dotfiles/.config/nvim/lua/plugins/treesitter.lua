@@ -102,10 +102,19 @@ return {
             pattern = filetypes,
             callback = function()
                 vim.treesitter.start()
-                vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
-                vim.wo.foldmethod = 'expr'
                 vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
             end,
         })
+
+        local function toggle_folds()
+            if vim.wo.foldmethod == 'expr' then
+                vim.wo.foldmethod = 'manual'
+            else
+                vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+                vim.wo.foldmethod = 'expr'
+            end
+        end
+        vim.api.nvim_create_user_command('TSFold', toggle_folds, {})
+        vim.keymap.set('n', '<leader>tf', toggle_folds, { desc = 'Toggle treesitter folding' })
     end,
 }

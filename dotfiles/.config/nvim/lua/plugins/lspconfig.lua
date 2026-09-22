@@ -77,7 +77,6 @@ return {
         }
 
         local ensure_installed = {
-            'asm-lsp',
             'arduino-language-server',
             'clangd',
             'clang-format',
