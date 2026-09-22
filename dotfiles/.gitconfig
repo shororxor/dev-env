@@ -3,9 +3,9 @@
 	name = Bao Nguyen
 [github]
 	user = shororxor
+[credential]
+	helper = store
 [core]
 	editor = nvim
-[url "git@github-shororxor.com:"]
-	insteadOf = git@github.com:
 [init]
 	defaultBranch = master

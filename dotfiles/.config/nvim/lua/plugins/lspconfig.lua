@@ -86,7 +86,6 @@ return {
             'java-test',
             'pyright',
             'ruff',
-            'black',
             'matlab-language-server',
             'html-lsp',
             'eslint-lsp',
