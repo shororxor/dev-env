@@ -49,7 +49,7 @@
                         "fetch_upstream_icon": true
                     },
                     "template": " ❯ {{.HEAD}}{{if .BranchStatus}} {{.BranchStatus}}{{end}}{{if .Working.Changed}} <p:Magenta>| \uf044 {{.Working.String}}</>{{end}}{{if and (.Staging.Changed) (.Working.Changed)}}{{end}}{{if .Staging.Changed}} <p:Magenta>| \uf046 {{.Staging.String}}</>{{end}}{{if gt .StashCount 0}} <p:Magenta>| \udb80\udd93 {{.StashCount}}</>{{end}}{{if gt .WorktreeCount 0}} <p:Magenta>| \uf1bb {{.WorktreeCount}}</>{{end}}",
-                    "foreground": "p:White",
+                    "foreground": "p:Green",
                     "type": "git",
                     "style": "plain",
                     "foreground_templates": [
