@@ -70,6 +70,22 @@
                     "style": "plain"
                 }
             ]
+        },
+        {
+            "type": "prompt",
+            "alignment": "left",
+            "newline": true,
+            "segments": [
+                {
+                    "properties": {
+                        "cache_duration": "none"
+                    },
+                    "template": "❯",
+                    "foreground": "#f92672",
+                    "type": "time",
+                    "style": "plain"
+                }
+            ]
         }
     ],
     "version": 3,
