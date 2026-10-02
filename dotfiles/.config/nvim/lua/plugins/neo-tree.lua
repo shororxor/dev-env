@@ -69,6 +69,19 @@ return {
                         end
                     end,
 
+                    open_in_nautilus = function(state)
+                        local node = state.tree:get_node()
+                        if not node then
+                            return
+                        end
+                        local path = node:get_id()
+                        if not path then
+                            vim.notify('No file path found', vim.log.levels.WARN)
+                            return
+                        end
+                        vim.fn.jobstart({ 'nautilus', path }, { detach = true })
+                    end,
+
                     copy_file_path = function(state)
                         local node = state.tree:get_node()
                         if not node then
@@ -95,6 +108,7 @@ return {
                         ['oa'] = 'avante_add_files',
                         ['op'] = 'open_pdf_in_firefox',
                         ['om'] = 'open_markdown_in_firefox',
+                        ['on'] = 'open_in_nautilus',
                         ['oy'] = 'copy_file_path',
                         ['or'] = 'copy_relative_file_path',
                     },
