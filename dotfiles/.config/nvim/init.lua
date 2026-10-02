@@ -7,6 +7,7 @@ vim.g.loaded_netrwPlugin = 1
 
 vim.opt.number = true
 vim.opt.relativenumber = true
+vim.opt.statuscolumn = '%s%4{v:lnum} %3{v:relnum} '
 vim.opt.numberwidth = 4
 vim.opt.mouse = 'a'
 vim.opt.showmode = false

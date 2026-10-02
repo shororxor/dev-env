@@ -1,5 +1,19 @@
 {
     "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+    "palettes": {
+        "template": "Classic",
+        "list": {
+            "Classic": {
+                "Magenta": "#f92672",
+                "Purple": "#ae81ff",
+                "Green": "#a6e22e",
+                "Blue": "#66d9ef",
+                "Yellow": "#e6db74",
+                "Orange": "#fd971f",
+                "White": "#f8f8f2"
+            }
+        }
+    },
     "blocks": [
         {
             "type": "prompt",
@@ -10,7 +24,7 @@
                         "cache_duration": "none"
                     },
                     "template": "\uf0e7 ",
-                    "foreground": "red",
+                    "foreground": "p:Magenta",
                     "type": "root",
                     "style": "plain"
                 },
@@ -24,7 +38,7 @@
                         "style": "agnoster_short"
                     },
                     "template": "{{.Path}}",
-                    "foreground": "#ae81ff",
+                    "foreground": "p:Purple",
                     "type": "path",
                     "style": "plain"
                 },
@@ -34,15 +48,15 @@
                         "fetch_status": true,
                         "fetch_upstream_icon": true
                     },
-                    "template": " ❯ {{.HEAD}}{{if .BranchStatus}} {{.BranchStatus}}{{end}}{{if .Working.Changed}} <red>\uf044 {{.Working.String}}</>{{end}}{{if and (.Staging.Changed) (.Working.Changed)}} |{{end}}{{if .Staging.Changed}} \uf046 {{.Staging.String}}{{end}}{{if gt .StashCount 0}} \udb80\udd93 {{.StashCount}}{{end}}{{if gt .WorktreeCount 0}} \uf1bb {{.WorktreeCount}}{{end}}",
-                    "foreground": "#a6e22e",
+                    "template": " ❯ {{.HEAD}}{{if .BranchStatus}} {{.BranchStatus}}{{end}}{{if .Working.Changed}} <p:Orange>| \uf044 {{.Working.String}}</>{{end}}{{if and (.Staging.Changed) (.Working.Changed)}}{{end}}{{if .Staging.Changed}} <p:Green>| \uf046 {{.Staging.String}}</>{{end}}{{if gt .StashCount 0}} <p:Magenta>| \udb80\udd93 {{.StashCount}} </> {{end}}{{if gt .WorktreeCount 0}} <p:Magenta>| \uf1bb {{.WorktreeCount}}</>{{end}}",
+                    "foreground": "p:White",
                     "type": "git",
                     "style": "plain",
                     "foreground_templates": [
-                        "{{if or (.Working.Changed) (.Staging.Changed)}}yellow{{end}}",
-                        "{{if and (gt .Ahead 0) (gt .Behind 0)}}red{{end}}",
-                        "{{if gt .Ahead 0}}green{{end}}",
-                        "{{if gt .Behind 0}}red{{end}}"
+                        "{{if or (.Working.Changed) (.Staging.Changed)}}p:Blue{{end}}",
+                        "{{if and (gt .Ahead 0) (gt .Behind 0)}}p:Orange{{end}}",
+                        "{{if gt .Ahead 0}}p:Green{{end}}",
+                        "{{if gt .Behind 0}}p:Magenta{{end}}"
                     ]
                 },
                 {
@@ -51,28 +65,11 @@
                         "fetch_version": false
                     },
                     "template": " ❯ \ue235 {{if .Error}}{{.Error}}{{else}}{{if .Venv}}{{.Venv}} {{end}}{{.Full}}{{end}}",
-                    "foreground": "#66d9ef",
+                    "foreground": "p:Blue",
                     "type": "python",
                     "style": "plain"
                 }
             ]
-        },
-        {
-            "type": "prompt",
-            "alignment": "left",
-            "segments": [
-                {
-                    "properties": {
-                        "cache_duration": "none",
-                        "time_format": "15:04:05"
-                    },
-                    "template": "[{{.CurrentDate | date .Format}}] ❯",
-                    "foreground": "#f92672",
-                    "type": "time",
-                    "style": "plain"
-                }
-            ],
-            "newline": true
         }
     ],
     "version": 3,
