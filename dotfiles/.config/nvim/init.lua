@@ -5,6 +5,7 @@ vim.g.have_nerd_font = true
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
+vim.opt.wrap = false
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.numberwidth = 4
@@ -84,6 +85,12 @@ vim.keymap.set('n', '<leader>r', function()
     vim.notify('Relative number: ' .. (vim.opt.relativenumber:get() and 'ON' or 'OFF'))
 end, { desc = 'Toggle relative number' })
 
+-- Wrap text
+vim.keymap.set('n', '<leader>fw', function()
+    vim.opt.wrap = not vim.opt.wrap:get()
+    vim.notify('Wrap: ' .. (vim.opt.wrap:get() and 'ON' or 'OFF'))
+end, { desc = 'Toggle text wrap' })
+
 -- Yank text highlight
 vim.api.nvim_create_autocmd('TextYankPost', {
     desc = 'Highlight when yanking (copying) text',
@@ -99,6 +106,15 @@ vim.keymap.set('n', '<leader>bf', function()
 end, { desc = 'Format buffer custom' })
 
 vim.keymap.set('n', '<leader>bd', '<cmd>bd<CR>', { desc = 'Delete current buffer' })
+
+-- CsvView plugin
+vim.keymap.set(
+    'n',
+    '<leader>cv',
+    '<cmd>CsvViewEnable display_mode=border<CR>',
+    { desc = 'Enable CsvView with border display' }
+)
+vim.keymap.set('n', '<leader>cx', '<cmd>CsvViewToggle display_mode=border<CR>', { desc = 'Toggle CsvView' })
 
 -- Lazyvim configuration
 local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
