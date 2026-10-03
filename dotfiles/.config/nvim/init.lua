@@ -7,7 +7,6 @@ vim.g.loaded_netrwPlugin = 1
 
 vim.opt.number = true
 vim.opt.relativenumber = true
-vim.opt.statuscolumn = '%s%4{v:lnum} %3{v:relnum} '
 vim.opt.numberwidth = 4
 vim.opt.mouse = 'a'
 vim.opt.showmode = false
@@ -80,6 +79,10 @@ vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 vim.keymap.set('n', '<A-h>', '<cmd>tabprevious<CR>', { desc = 'Go to previous tab' })
 vim.keymap.set('n', '<A-l>', '<cmd>tabnext<CR>', { desc = 'Go to next tab' })
+vim.keymap.set('n', '<leader>r', function()
+    vim.opt.relativenumber = not vim.opt.relativenumber:get()
+    vim.notify('Relative number: ' .. (vim.opt.relativenumber:get() and 'ON' or 'OFF'))
+end, { desc = 'Toggle relative number' })
 
 -- Yank text highlight
 vim.api.nvim_create_autocmd('TextYankPost', {
