@@ -98,6 +98,8 @@ return {
                         ['oy'] = 'copy_file_path',
                         ['or'] = 'copy_relative_file_path',
                     },
+                    number = false,
+                    relativenumber = false,
                 },
                 filtered_items = {
                     visible = true,
