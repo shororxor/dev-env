@@ -5,9 +5,16 @@ vim.g.have_nerd_font = true
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
+-- Java: use Homebrew OpenJDK for all Java tooling started by Neovim (jdtls, javac, ...)
+local java_home = '/opt/homebrew/opt/openjdk/libexec/openjdk.jdk/Contents/Home'
+if vim.fn.isdirectory(java_home) == 1 then
+    vim.env.JAVA_HOME = java_home
+    vim.env.PATH = java_home .. '/bin:' .. vim.env.PATH
+end
+
 vim.opt.wrap = false
 vim.opt.number = true
-vim.opt.relativenumber = true
+vim.opt.relativenumber = false
 vim.opt.numberwidth = 4
 vim.opt.mouse = 'a'
 vim.opt.showmode = false
@@ -106,6 +113,53 @@ vim.keymap.set('n', '<leader>bf', function()
 end, { desc = 'Format buffer custom' })
 
 vim.keymap.set('n', '<leader>bd', '<cmd>bd<CR>', { desc = 'Delete current buffer' })
+
+-- Compile current buffer with the given command
+local function compile_buffer(name, exts, build_cmd)
+    local src = vim.api.nvim_buf_get_name(0)
+    if src == '' then
+        vim.notify('Save the buffer before compiling', vim.log.levels.WARN)
+        return
+    end
+
+    local ext = vim.fn.fnamemodify(src, ':e')
+    if not vim.tbl_contains(exts, ext) then
+        vim.notify(name .. ' cannot compile .' .. ext .. ' files', vim.log.levels.WARN)
+        return
+    end
+
+    vim.cmd.write()
+    local cmd, out = build_cmd(src)
+
+    vim.system(cmd, { text = true }, function(result)
+        vim.schedule(function()
+            if result.code == 0 then
+                local msg = 'Compiled ' .. vim.fn.fnamemodify(src, ':t')
+                if out then
+                    msg = msg .. ' -> ' .. vim.fn.fnamemodify(out, ':t')
+                end
+                vim.notify(msg, vim.log.levels.INFO)
+            else
+                vim.notify(result.stderr ~= '' and result.stderr or 'Compilation failed', vim.log.levels.ERROR)
+            end
+        end)
+    end)
+end
+
+-- g++ for C/C++ (main.cpp -> main)
+vim.keymap.set('n', '<leader>cc', function()
+    compile_buffer('g++', { 'c', 'cc', 'cpp', 'cxx' }, function(src)
+        local out = vim.fn.fnamemodify(src, ':r')
+        return { 'g++', src, '-o', out }, out
+    end)
+end, { desc = 'Compile current C/C++ file with g++' })
+
+-- javac for Java (Main.java -> Main.class)
+vim.keymap.set('n', '<leader>jc', function()
+    compile_buffer('javac', { 'java' }, function(src)
+        return { 'javac', src }
+    end)
+end, { desc = 'Compile current Java file with javac' })
 
 -- CsvView plugin
 vim.keymap.set(

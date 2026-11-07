@@ -68,7 +68,26 @@ return {
             },
             cmake = {},
             arduino_language_server = {},
-            jdtls = {},
+            jdtls = {
+                -- jdtls needs a workspace root. Fall back to the file's directory
+                -- for standalone files (e.g. competitive-programming sources).
+                root_dir = function(bufnr, on_dir)
+                    local root = vim.fs.root(bufnr, {
+                        'mvnw',
+                        'gradlew',
+                        'settings.gradle',
+                        'settings.gradle.kts',
+                        '.git',
+                        'build.xml',
+                        'pom.xml',
+                        'build.gradle',
+                        'build.gradle.kts',
+                        '.project',
+                        '.classpath',
+                    })
+                    on_dir(root or vim.fs.dirname(vim.api.nvim_buf_get_name(bufnr)))
+                end,
+            },
             pyright = {},
             ruff = {},
             matlab_ls = {},
