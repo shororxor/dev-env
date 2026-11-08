@@ -161,6 +161,14 @@ vim.keymap.set('n', '<leader>jc', function()
     end)
 end, { desc = 'Compile current Java file with javac' })
 
+-- rustc for Rust (main.rs -> main)
+vim.keymap.set('n', '<leader>cr', function()
+    compile_buffer('rustc', { 'rs' }, function(src)
+        local out = vim.fn.fnamemodify(src, ':r')
+        return { 'rustc', '--edition', '2021', src, '-o', out }, out
+    end)
+end, { desc = 'Compile current Rust file with rustc' })
+
 -- CsvView plugin
 vim.keymap.set(
     'n',
