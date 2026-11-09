@@ -64,7 +64,7 @@ return {
                     '--background-index',
                     '--clang-tidy',
                     '--header-insertion=iwyu',
-                    '--compile-commands-dir=.',
+                    '--compile-commands-dir=build',
                 },
             },
             cmake = {},
@@ -89,6 +89,34 @@ return {
                     on_dir(root or vim.fs.dirname(vim.api.nvim_buf_get_name(bufnr)))
                 end,
             },
+            gopls = {
+                settings = {
+                    gopls = {
+                        usePlaceholders = true,
+                        completeUnimported = true,
+                        analyses = { unusedparams = true },
+                    },
+                },
+            },
+            csharp_ls = {
+                -- csharp-ls normally locates a .sln/.csproj to define the workspace.
+                -- Fall back to the file's own directory for standalone CP files,
+                -- like the jdtls config above does.
+                root_dir = function(bufnr, on_dir)
+                    local fname = vim.api.nvim_buf_get_name(bufnr)
+                    if fname == '' then
+                        return
+                    end
+
+                    local root = vim.fs.root(bufnr, function(name)
+                        return name:match('%.sln$') ~= nil
+                            or name:match('%.slnx$') ~= nil
+                            or name:match('%.csproj$') ~= nil
+                    end)
+
+                    on_dir(root or vim.fs.dirname(fname))
+                end,
+            },
             ocamllsp = {},
             pyright = {},
             rust_analyzer = {},
@@ -104,6 +132,10 @@ return {
             'clang-format',
             'cmake-language-server',
             'jdtls',
+            'gopls',
+            'goimports',
+            'csharp-language-server',
+            'csharpier',
             'java-debug-adapter',
             'java-test',
             'pyright',
