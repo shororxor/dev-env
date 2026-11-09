@@ -32,6 +32,9 @@ return {
             objc = { 'clang_format' },
             objcpp = { 'clang_format' },
             java = { 'clang-format' },
+            go = { 'goimports' },
+            -- cs has no external formatter on purpose: format_on_save falls
+            -- back to csharp-ls, which honors .editorconfig (brace style etc.)
             python = { 'ruff_format' },
         },
     },
