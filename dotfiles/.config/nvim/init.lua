@@ -12,6 +12,12 @@ if vim.fn.isdirectory(java_home) == 1 then
     vim.env.PATH = java_home .. '/bin:' .. vim.env.PATH
 end
 
+-- OCaml: make the opam switch binaries available to Neovim (ocamllsp, ocamlopt, dune, ...)
+local opam_bin = vim.fn.expand('~/.opam/default/bin')
+if vim.fn.isdirectory(opam_bin) == 1 then
+    vim.env.PATH = opam_bin .. ':' .. vim.env.PATH
+end
+
 vim.opt.wrap = false
 vim.opt.number = true
 vim.opt.relativenumber = false
@@ -168,6 +174,14 @@ vim.keymap.set('n', '<leader>cr', function()
         return { 'rustc', '--edition', '2021', src, '-o', out }, out
     end)
 end, { desc = 'Compile current Rust file with rustc' })
+
+-- ocamlopt for OCaml (main.ml -> main)
+vim.keymap.set('n', '<leader>oc', function()
+    compile_buffer('ocamlopt', { 'ml' }, function(src)
+        local out = vim.fn.fnamemodify(src, ':r')
+        return { 'ocamlopt', src, '-o', out }, out
+    end)
+end, { desc = 'Compile current OCaml file with ocamlopt' })
 
 -- CsvView plugin
 vim.keymap.set(

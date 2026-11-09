@@ -88,6 +88,7 @@ return {
                     on_dir(root or vim.fs.dirname(vim.api.nvim_buf_get_name(bufnr)))
                 end,
             },
+            ocamllsp = {},
             pyright = {},
             rust_analyzer = {},
             ruff = {},
