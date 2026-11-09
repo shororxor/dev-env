@@ -161,7 +161,7 @@ vim.keymap.set('n', '<leader>cc', function()
 end, { desc = 'Compile current C/C++ file with g++' })
 
 -- javac for Java (Main.java -> Main.class)
-vim.keymap.set('n', '<leader>jc', function()
+vim.keymap.set('n', '<leader>cj', function()
     compile_buffer('javac', { 'java' }, function(src)
         return { 'javac', src }
     end)
@@ -176,7 +176,7 @@ vim.keymap.set('n', '<leader>cr', function()
 end, { desc = 'Compile current Rust file with rustc' })
 
 -- ocamlopt for OCaml (main.ml -> main)
-vim.keymap.set('n', '<leader>oc', function()
+vim.keymap.set('n', '<leader>co', function()
     compile_buffer('ocamlopt', { 'ml' }, function(src)
         local out = vim.fn.fnamemodify(src, ':r')
         return { 'ocamlopt', src, '-o', out }, out
